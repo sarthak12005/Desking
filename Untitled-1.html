@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive HTML, CSS, JavaScript Compiler</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .tabs button {
+            flex: 1;
+            padding: 10px;
+            background-color: #f4f4f9;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s ease;
+        }
+        .tabs button.active {
+            background-color: #fff;
+            border-bottom: 2px solid #007bff;
+            color: #007bff;
+        }
+        .editor {
+            display: none;
+            flex-direction: column;
+        }
+        .editor.active {
+            display: flex;
+            
+        }
+        textarea {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #000000;
+            background-color: #f9f9f9;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        button.compile-btn {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button.compile-btn:hover {
+            background-color: #0056b3;
+        }
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+        .editor-container, .output-container {
+            width: 48%;
+            margin: 20px;
+            overflow: auto;
+        }
+        .container .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Interactive HTML, CSS, JavaScript Compiler</h1>
+
+    <div class="container">
+        <!-- Editor Section -->
+        <div class="editor-container">
+            <div class="tabs">
+                <button class="tablink active" onclick="openEditor('htmlEditor')">HTML</button>
+                <button class="tablink" onclick="openEditor('cssEditor')">CSS</button>
+                <button class="tablink" onclick="openEditor('jsEditor')">JavaScript</button>
+            </div>
+
+            <!-- HTML Editor -->
+            <div id="htmlEditor" class="editor active">
+                <textarea id="htmlCode" placeholder="Write HTML code here"></textarea>
+            </div>
+
+            <!-- CSS Editor -->
+            <div id="cssEditor" class="editor">
+                <textarea id="cssCode" placeholder="Write CSS code here"></textarea>
+            </div>
+
+            <!-- JavaScript Editor -->
+            <div id="jsEditor" class="editor">
+                <textarea id="jsCode" placeholder="Write JavaScript code here"></textarea>
+            </div>
+
+            <!-- Compile Button -->
+            <button class="compile-btn" onclick="compile()">Run Code</button>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output-container">
+            <h3>Result</h3>
+            <iframe id="outputFrame"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Function to show the selected editor
+        function openEditor(editorId) {
+            var editors = document.getElementsByClassName("editor");
+            var tabs = document.getElementsByClassName("tablink");
+            for (var i = 0; i < editors.length; i++) {
+                editors[i].classList.remove("active");
+                tabs[i].classList.remove("active");
+            }
+            document.getElementById(editorId).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+
+        // Function to compile and display the result
+        function compile() {
+            const html = document.getElementById("htmlCode").value;
+            const css = "<style>" + document.getElementById("cssCode").value + "</style>";
+            const js = "<script>" + document.getElementById("jsCode").value + "<\/script>";
+
+            const outputFrame = document.getElementById("outputFrame").contentWindow.document;
+            outputFrame.open();
+            outputFrame.write(html + css + js);
+            outputFrame.close();
+        }
+    </script>
+
+</body>
+</html>
